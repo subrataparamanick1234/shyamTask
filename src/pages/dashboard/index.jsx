@@ -18,6 +18,7 @@ import { mainListItems } from "../../Components/Listitems";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
+import { toast } from "react-toastify";
 
 const drawerWidth = 240;
 
@@ -111,6 +112,7 @@ const Dashboard = () => {
                 onClick={() => {
                   navigate("/");
                   localStorage.removeItem("token");
+                  toast("Logout Succesfully !", { type: "success" });
                 }}
               >
                 <LogoutIcon />
