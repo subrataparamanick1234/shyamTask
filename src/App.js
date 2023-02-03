@@ -6,7 +6,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 
 function PublicRoute({ children }) {
-  const token = false;
+  const token = localStorage.getItem("token");
 
   return token !== null && token !== undefined ? (
     <Navigate to="/dashboard" />
@@ -16,7 +16,7 @@ function PublicRoute({ children }) {
 }
 
 function PrivateRoute({ children }) {
-  const token = true;
+  const token = localStorage.getItem("token");
 
   return token !== null && token !== undefined ? children : <Navigate to="/" />;
 }
@@ -62,14 +62,14 @@ function App() {
           );
         })}
 
-        <Route
+        {/* <Route
           path="/dashboard/*"
           element={
             <PrivateRoute>
               <Dashboard />
             </PrivateRoute>
           }
-        />
+        /> */}
         {/****************** end Private Route  *********************/}
 
         {/**************** No page found *********************/}
