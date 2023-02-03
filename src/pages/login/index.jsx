@@ -37,8 +37,7 @@ const Login = () => {
     resolver: yupResolver(validationSchema),
     mode: "all",
   };
-  const { register, handleSubmit, formState, getValues, setValue } =
-    useForm(formOptions);
+  const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
 
   const handleSubmitForm = (data) => {

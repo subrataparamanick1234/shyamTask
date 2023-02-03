@@ -10,7 +10,7 @@ axiosInstance.interceptors.request.use(
       localStorage.getItem("token") || sessionStorage.getItem("token");
 
     if (token !== null || token !== undefined) {
-      config.headers["Authorization"] = token;
+      config.headers["Authorization"] = `Bearer ${token}`;
       config.headers["api_key"] = process.env.REACT_APP_API_KEY;
       config.headers["source"] = process.env.REACT_APP_SOURCE;
       config.headers["device_type"] = process.env.REACT_APP_DEVICE_TYPE;

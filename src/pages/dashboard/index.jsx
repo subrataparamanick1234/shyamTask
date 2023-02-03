@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -14,12 +14,14 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { mainListItems } from "../../Components/Listitems";
+import { mainListItems } from "../../components/Listitems";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { toast } from "react-toastify";
 
+import { useDispatch, useSelector } from "react-redux";
+import { getDoctorList } from "../../redux/dashboardSlice";
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -69,11 +71,23 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 const Dashboard = () => {
-  const [open, setOpen] = useState(true);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { dashboardData } = useSelector((store) => store.dashboard);
+  const [open, setOpen] = useState(true);
+  useEffect(() => {
+    async function getDoctor() {
+      let formData = new FormData();
+      formData.append("id", 14);
+      dispatch(getDoctorList(formData));
+    }
+    getDoctor();
+  }, []);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
   return (
     <>
       {" "}
@@ -152,35 +166,80 @@ const Dashboard = () => {
           >
             <Toolbar />
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-              <Grid
-                item
-                xs={12}
-                md={4}
-                lg={9}
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
-                {[1, 2, 3, 4].map((i) => (
-                  <Paper
-                    key={i}
+              <Grid item xs={12} md={4} lg={9}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    width: "100%",
+                  }}
+                >
+                  <Typography
+                    component={"h4"}
                     sx={{
-                      p: 2,
-                      display: "flex",
-                      flexDirection: "column",
-                      height: 200,
-                      width: 200,
-                      margin: "0px 0px 0px 10px",
+                      mt: 4,
+                      mb: 4,
                     }}
                   >
-                    {/* <Chart /> */}hi
-                  </Paper>
-                ))}
-              </Grid>
+                    Doc Name : {dashboardData?.name}
+                  </Typography>
 
-              <Grid item xs={12} md={4} lg={9}>
-                <Button variant="outlined">Book now</Button>
+                  <Typography
+                    component={"h4"}
+                    sx={{
+                      mt: 4,
+                      mb: 4,
+                    }}
+                  >
+                    clinics Details:
+                  </Typography>
+                  {dashboardData?.clinics?.map((item, i) => (
+                    <Grid
+                      key={i}
+                      item
+                      xs={12}
+                      md={4}
+                      lg={9}
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      Name : {item?.name}
+                      {Object.entries(item?.slots)?.map((key) => (
+                        <Paper
+                          key={i}
+                          sx={{
+                            p: 2,
+                            display: "flex",
+                            flexDirection: "column",
+                            height: 200,
+                            width: 200,
+                            margin: "10px 0px 0px 10px",
+                          }}
+                        >
+                          {key[0]}
+                          <br />
+                          {key[1]?.start_time} - {key[1]?.end_time}
+                        </Paper>
+                      ))}
+                      <Grid
+                        item
+                        xs={12}
+                        md={4}
+                        lg={9}
+                        sx={{
+                          mt: 4,
+                          mb: 4,
+                        }}
+                      >
+                        <Button variant="outlined">Book now</Button>
+                      </Grid>
+                    </Grid>
+                  ))}
+                </Paper>
               </Grid>
             </Container>
           </Box>
