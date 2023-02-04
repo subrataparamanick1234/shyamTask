@@ -15,9 +15,34 @@ export const getDoctorList = createAsyncThunk(
   }
 );
 
+export const getSlotList = createAsyncThunk("/getSlotlist", async (data) => {
+  try {
+    const res = await axiosInstance.post(endpoint.chcekSlot, data);
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const createBooking = createAsyncThunk(
+  "/createBooking",
+  async (data) => {
+    try {
+      const res = await axiosInstance.post(endpoint.createBooking, data);
+      return res?.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const initialState = {
   isDashboardFetch: false,
   dashboardData: null,
+  isSlotList: false,
+  getAllSlotList: [],
+  isSlotMsg: "",
+  isBooking: false,
 };
 
 export const dashboardSlice = createSlice({
@@ -34,6 +59,35 @@ export const dashboardSlice = createSlice({
     },
     [getDoctorList.rejected]: (state, { payload }) => {
       state.isDashboardFetch = false;
+      toast(state.message, { type: "error" });
+    },
+
+    [getSlotList.pending]: (state) => {
+      state.isSlotList = false;
+    },
+    [getSlotList.fulfilled]: (state, { payload }) => {
+      state.isSlotList = true;
+      if (payload?.status) {
+        state.getAllSlotList = payload?.slots;
+      } else {
+        state.getAllSlotList = [];
+        state.isSlotMsg = payload?.message;
+      }
+    },
+    [getSlotList.rejected]: (state, { payload }) => {
+      state.isSlotList = false;
+      toast(state.message, { type: "error" });
+    },
+
+    [createBooking.pending]: (state) => {
+      state.isBooking = false;
+    },
+    [createBooking.fulfilled]: (state, { payload }) => {
+      state.isBooking = true;
+      state.getAllSlotList = [];
+    },
+    [createBooking.rejected]: (state, { payload }) => {
+      state.isBooking = false;
       toast(state.message, { type: "error" });
     },
   },

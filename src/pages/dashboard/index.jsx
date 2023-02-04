@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -22,6 +22,8 @@ import { toast } from "react-toastify";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getDoctorList } from "../../redux/dashboardSlice";
+import { AppointmentModal } from "../../components/AppointmentModal";
+
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -75,6 +77,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { dashboardData } = useSelector((store) => store.dashboard);
   const [open, setOpen] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [clinicID, setclinicID] = useState(null);
   useEffect(() => {
     async function getDoctor() {
       let formData = new FormData();
@@ -216,7 +220,7 @@ const Dashboard = () => {
                             display: "flex",
                             flexDirection: "column",
                             height: 200,
-                            width: 200,
+                            width: "100%",
                             margin: "10px 0px 0px 10px",
                           }}
                         >
@@ -225,18 +229,22 @@ const Dashboard = () => {
                           {key[1]?.start_time} - {key[1]?.end_time}
                         </Paper>
                       ))}
-                      <Grid
-                        item
-                        xs={12}
-                        md={4}
-                        lg={9}
+                      <Button
+                        variant="outlined"
+                        color="error"
                         sx={{
-                          mt: 4,
+                          ml: 4,
                           mb: 4,
+                          fontSize: 12,
+                          height: "50px",
+                        }}
+                        onClick={() => {
+                          setOpenModal(true);
+                          setclinicID(item?.id);
                         }}
                       >
-                        <Button variant="outlined">Book now</Button>
-                      </Grid>
+                        Book now
+                      </Button>
                     </Grid>
                   ))}
                 </Paper>
@@ -244,6 +252,11 @@ const Dashboard = () => {
             </Container>
           </Box>
         </Box>
+        <AppointmentModal
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          clinicID={clinicID}
+        />
       </ThemeProvider>
     </>
   );
