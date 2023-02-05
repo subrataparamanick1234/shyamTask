@@ -52,6 +52,7 @@ const Login = () => {
           toast(res?.payload?.message, { type: "success" });
           navigate("/dashboard");
           localStorage.setItem("token", res?.payload?.token?.access_token);
+          localStorage.setItem("user", JSON.stringify(res?.payload?.user));
           setIsLoading(false);
         } else {
           toast("Something went worng!", { type: "error" });

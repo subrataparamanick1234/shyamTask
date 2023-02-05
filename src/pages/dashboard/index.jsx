@@ -75,6 +75,7 @@ const mdTheme = createTheme();
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userDetails = JSON.parse(localStorage.getItem("user"));
   const { dashboardData } = useSelector((store) => store.dashboard);
   const [open, setOpen] = useState(true);
   const [openModal, setOpenModal] = useState(false);
@@ -128,16 +129,28 @@ const Dashboard = () => {
               >
                 Dashboard
               </Typography>
-              <IconButton
-                color="inherit"
-                onClick={() => {
-                  navigate("/");
-                  localStorage.removeItem("token");
-                  toast("Logout Succesfully !", { type: "success" });
-                }}
-              >
-                <LogoutIcon />
-              </IconButton>
+
+              <Box sx={{ display: "flex" }}>
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  color="inherit"
+                  noWrap
+                  sx={{ flexGrow: 1 }}
+                >
+                  {userDetails?.name}
+                </Typography>
+                <IconButton
+                  color="inherit"
+                  onClick={() => {
+                    navigate("/");
+                    localStorage.removeItem("token");
+                    toast("Logout Succesfully !", { type: "success" });
+                  }}
+                >
+                  <LogoutIcon />
+                </IconButton>
+              </Box>
             </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open}>
@@ -218,7 +231,7 @@ const Dashboard = () => {
                           }}
                         >
                           Name : {item?.name}
-                          {Object.entries(item?.slots)?.map((key) => (
+                          {Object.entries(item?.slots)?.map((key, i) => (
                             <Paper
                               key={i}
                               sx={{
