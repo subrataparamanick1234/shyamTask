@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -86,7 +86,7 @@ const Dashboard = () => {
       dispatch(getDoctorList(formData));
     }
     getDoctor();
-  }, []);
+  }, [dispatch]);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -169,85 +169,92 @@ const Dashboard = () => {
             }}
           >
             <Toolbar />
+
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
               <Grid item xs={12} md={4} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    width: "100%",
-                  }}
-                >
-                  <Typography
-                    component={"h4"}
-                    sx={{
-                      mt: 4,
-                      mb: 4,
-                    }}
-                  >
-                    Doc Name : {dashboardData?.name}
-                  </Typography>
-
-                  <Typography
-                    component={"h4"}
-                    sx={{
-                      mt: 4,
-                      mb: 4,
-                    }}
-                  >
-                    clinics Details:
-                  </Typography>
-                  {dashboardData?.clinics?.map((item, i) => (
-                    <Grid
-                      key={i}
-                      item
-                      xs={12}
-                      md={4}
-                      lg={9}
+                {dashboardData !== null ? (
+                  <>
+                    <Paper
                       sx={{
+                        p: 2,
                         display: "flex",
-                        flexDirection: "row",
+                        flexDirection: "column",
+                        height: "100%",
+                        width: "100%",
                       }}
                     >
-                      Name : {item?.name}
-                      {Object.entries(item?.slots)?.map((key) => (
-                        <Paper
-                          key={i}
-                          sx={{
-                            p: 2,
-                            display: "flex",
-                            flexDirection: "column",
-                            height: 200,
-                            width: "100%",
-                            margin: "10px 0px 0px 10px",
-                          }}
-                        >
-                          {key[0]}
-                          <br />
-                          {key[1]?.start_time} - {key[1]?.end_time}
-                        </Paper>
-                      ))}
-                      <Button
-                        variant="outlined"
-                        color="error"
+                      <Typography
+                        component={"h4"}
                         sx={{
-                          ml: 4,
+                          mt: 4,
                           mb: 4,
-                          fontSize: 12,
-                          height: "50px",
-                        }}
-                        onClick={() => {
-                          setOpenModal(true);
-                          setclinicID(item?.id);
                         }}
                       >
-                        Book now
-                      </Button>
-                    </Grid>
-                  ))}
-                </Paper>
+                        Doc Name : {dashboardData?.name}
+                      </Typography>
+
+                      <Typography
+                        component={"h4"}
+                        sx={{
+                          mt: 4,
+                          mb: 4,
+                        }}
+                      >
+                        clinics Details:
+                      </Typography>
+                      {dashboardData?.clinics?.map((item, i) => (
+                        <Grid
+                          key={i}
+                          item
+                          xs={12}
+                          md={4}
+                          lg={9}
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                          }}
+                        >
+                          Name : {item?.name}
+                          {Object.entries(item?.slots)?.map((key) => (
+                            <Paper
+                              key={i}
+                              sx={{
+                                p: 2,
+                                display: "flex",
+                                flexDirection: "column",
+                                height: 200,
+                                width: "100%",
+                                margin: "10px 0px 0px 10px",
+                              }}
+                            >
+                              {key[0]}
+                              <br />
+                              {key[1]?.start_time} - {key[1]?.end_time}
+                            </Paper>
+                          ))}
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            sx={{
+                              ml: 4,
+                              mb: 4,
+                              fontSize: 12,
+                              height: "50px",
+                            }}
+                            onClick={() => {
+                              setOpenModal(true);
+                              setclinicID(item?.id);
+                            }}
+                          >
+                            Book now
+                          </Button>
+                        </Grid>
+                      ))}
+                    </Paper>
+                  </>
+                ) : (
+                  <>loading...</>
+                )}
               </Grid>
             </Container>
           </Box>

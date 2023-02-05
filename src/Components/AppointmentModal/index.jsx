@@ -14,7 +14,6 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -41,7 +40,7 @@ export const AppointmentModal = ({ setOpenModal, openModal, clinicID }) => {
       dispatch(getSlotList(formData));
     }
     getAllSlot();
-  }, [clinicID, slotDate]);
+  }, [clinicID, slotDate, dispatch]);
   const handleChangeSelect = (event) => {
     setValueSelect(event.target.value);
   };
@@ -55,16 +54,16 @@ export const AppointmentModal = ({ setOpenModal, openModal, clinicID }) => {
   };
   const createBookingFormData = () => {
     setIsLoading(true);
-    const data = {
-      doctor_id: 14,
-      date: dayjs(slotDate).format("YYYY-MM-DD"),
-      clinic_id: clinicID,
-      self: valueSelect,
-      family_member_id: selectMember,
-      slot: selectSlot,
-    };
-
-    dispatch(createBooking(data))
+    dispatch(
+      createBooking({
+        doctor_id: 14,
+        date: dayjs(slotDate).format("YYYY-MM-DD"),
+        clinic_id: clinicID,
+        self: valueSelect,
+        family_member_id: selectMember,
+        slot: selectSlot,
+      })
+    )
       .then((res) => {
         if (res?.payload?.status) {
           toast(res?.payload?.message, { type: "success" });
@@ -80,10 +79,11 @@ export const AppointmentModal = ({ setOpenModal, openModal, clinicID }) => {
       });
   };
   return (
-    <Dialog open={openModal} onClose={handleClose}>
+    <Dialog open={openModal} onClose={handleClose} fullWidth>
       <DialogTitle>Book Appointment</DialogTitle>
       <DialogContent>
         <RadioGroup
+          sx={{ width: "100%" }}
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
@@ -101,7 +101,7 @@ export const AppointmentModal = ({ setOpenModal, openModal, clinicID }) => {
             onChange={(newValue) => {
               setSlotDate(newValue);
             }}
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => <TextField {...params} fullWidth />}
           />
         </LocalizationProvider>
 
@@ -144,7 +144,14 @@ export const AppointmentModal = ({ setOpenModal, openModal, clinicID }) => {
             </Select>
           </FormControl>
         ) : (
-          <>{isSlotMsg}</>
+          <>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">
+                {" "}
+                {isSlotMsg}. Please select a date.
+              </InputLabel>
+            </FormControl>
+          </>
         )}
       </DialogContent>
       <DialogActions>

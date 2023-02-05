@@ -62,14 +62,14 @@ function App() {
           );
         })}
 
-        {/* <Route
+        <Route
           path="/dashboard/*"
           element={
             <PrivateRoute>
               <Dashboard />
             </PrivateRoute>
           }
-        /> */}
+        />
         {/****************** end Private Route  *********************/}
 
         {/**************** No page found *********************/}
