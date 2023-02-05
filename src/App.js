@@ -4,7 +4,7 @@ import Dashboard from "./pages/dashboard";
 import NotFound from "./pages/NotFound";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
-
+// FOR PUBLIC
 function PublicRoute({ children }) {
   const token = localStorage.getItem("token");
 
@@ -14,18 +14,24 @@ function PublicRoute({ children }) {
     children
   );
 }
+// FOR PRIVATE
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
 
   return token !== null && token !== undefined ? children : <Navigate to="/" />;
 }
+
+// FOR PUBLIC ROUTE LIST
+
 const publicRoutesName = [
   {
     path: "/",
     component: <Login />,
   },
 ];
+
+// FOR PRIVATE ROUTE LIST
 
 const privateRoutesName = [
   {

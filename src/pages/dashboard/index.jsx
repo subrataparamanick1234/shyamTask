@@ -79,6 +79,8 @@ const Dashboard = () => {
   const [open, setOpen] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [clinicID, setclinicID] = useState(null);
+
+  // FOR GET DOCTOR LIST
   useEffect(() => {
     async function getDoctor() {
       let formData = new FormData();
@@ -87,6 +89,7 @@ const Dashboard = () => {
     }
     getDoctor();
   }, [dispatch]);
+  // FOR GET DOCTOR LIST
 
   const toggleDrawer = () => {
     setOpen(!open);

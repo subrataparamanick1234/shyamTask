@@ -3,6 +3,9 @@ import { toast } from "react-toastify";
 import axiosInstance from "../api/index";
 import { endpoint } from "../api/endpoint";
 
+
+// FOR DOCTOR LIST
+
 export const getDoctorList = createAsyncThunk(
   "/getdoctorlist",
   async (data) => {
@@ -14,6 +17,7 @@ export const getDoctorList = createAsyncThunk(
     }
   }
 );
+// FOR SLOT LIST
 
 export const getSlotList = createAsyncThunk("/getSlotlist", async (data) => {
   try {
@@ -23,6 +27,8 @@ export const getSlotList = createAsyncThunk("/getSlotlist", async (data) => {
     console.log(error);
   }
 });
+
+// FOR CREATE BOOKING
 
 export const createBooking = createAsyncThunk(
   "/createBooking",
@@ -50,6 +56,7 @@ export const dashboardSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
+    // FOR GET DOCTOR LIST
     [getDoctorList.pending]: (state) => {
       state.isDashboardFetch = false;
     },
@@ -61,6 +68,9 @@ export const dashboardSlice = createSlice({
       state.isDashboardFetch = false;
       toast(state.message, { type: "error" });
     },
+    // FOR GET DOCTOR LIST
+
+    // FOR SLOT LIST
 
     [getSlotList.pending]: (state) => {
       state.isSlotList = false;
@@ -78,6 +88,9 @@ export const dashboardSlice = createSlice({
       state.isSlotList = false;
       toast(state.message, { type: "error" });
     },
+    // FOR SLOT LIST
+
+    // FOR CREATE BOOKING
 
     [createBooking.pending]: (state) => {
       state.isBooking = false;
@@ -90,5 +103,6 @@ export const dashboardSlice = createSlice({
       state.isBooking = false;
       toast(state.message, { type: "error" });
     },
+    // FOR CREATE BOOKING
   },
 });

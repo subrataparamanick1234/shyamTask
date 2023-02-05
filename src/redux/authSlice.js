@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import axiosInstance from "../api/index";
 import { endpoint } from "../api/endpoint";
+// FOR LOGIN
 
 export const loginRequest = createAsyncThunk("/login", async (user) => {
   try {
@@ -21,7 +22,8 @@ export const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    //login
+    // FOR LOGIN
+
     [loginRequest.pending]: (state) => {
       state.isLogin = false;
     },
@@ -32,5 +34,6 @@ export const authSlice = createSlice({
       state.isLogin = false;
       toast(state.message, { type: "error" });
     },
+    // FOR LOGIN
   },
 });

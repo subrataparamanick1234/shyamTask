@@ -31,6 +31,8 @@ export const AppointmentModal = ({ setOpenModal, openModal, clinicID }) => {
   const [selectSlot, setSelectSlot] = useState(null);
   const [selectMember, setSelectMember] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+
+  // FOR GET SLOT LIST
   useEffect(() => {
     async function getAllSlot() {
       let formData = new FormData();
@@ -41,10 +43,15 @@ export const AppointmentModal = ({ setOpenModal, openModal, clinicID }) => {
     }
     getAllSlot();
   }, [clinicID, slotDate, dispatch]);
-  const handleChangeSelect = (event) => {
+  // FOR GET SLOT LIST
+
+  // FOR CHANGE THE MEMBER
+  const handleChangeMember = (event) => {
     setValueSelect(event.target.value);
   };
+  // FOR CHANGE THE MEMBER
 
+  // FOR CLOSE THE DIALOG AND CLEAR THE STATE VALUE
   const handleClose = () => {
     setOpenModal(false);
     setSelectMember(0);
@@ -52,6 +59,9 @@ export const AppointmentModal = ({ setOpenModal, openModal, clinicID }) => {
     setValueSelect(null);
     setSlotDate(null);
   };
+  // FOR CLOSE THE DIALOG AND CLEAR THE STATE VALUE
+
+  // FOR CREATE THE BOOKING
   const createBookingFormData = () => {
     setIsLoading(true);
     dispatch(
@@ -78,6 +88,8 @@ export const AppointmentModal = ({ setOpenModal, openModal, clinicID }) => {
         console.log(err);
       });
   };
+  // FOR CREATE THE BOOKING
+
   return (
     <Dialog open={openModal} onClose={handleClose} fullWidth>
       <DialogTitle>Book Appointment</DialogTitle>
@@ -88,7 +100,7 @@ export const AppointmentModal = ({ setOpenModal, openModal, clinicID }) => {
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
           value={valueSelect}
-          onChange={handleChangeSelect}
+          onChange={handleChangeMember}
         >
           <FormControlLabel value={1} control={<Radio />} label="For self" />
           <FormControlLabel value={2} control={<Radio />} label="For family" />
